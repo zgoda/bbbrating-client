@@ -24,8 +24,10 @@
     "sirv-cli": "^1.0.1"
   },
   "dependencies": {
+    "milligram": "^1.4.1",
+    "normalize.css": "^8.0.1",
     "preact": "^10.4.4",
     "preact-render-to-string": "^5.1.9",
-    "preact-router": "^3.2.1"
+    "typeface-roboto": "0.0.75"
   }
 }
