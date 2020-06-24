@@ -24,7 +24,6 @@
     "sirv-cli": "^1.0.1"
   },
   "dependencies": {
-    "mustard-ui": "^1.0.4",
     "preact": "^10.4.4",
     "preact-render-to-string": "^5.1.9"
   }
