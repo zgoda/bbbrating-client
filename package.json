@@ -11,6 +11,9 @@
   },
   "eslintConfig": {
     "extends": "preact",
+    "rules": {
+      "no-unused-vars": ["error", {"argsIgnorePattern": "^_"}]
+    },
     "ignorePatterns": [
       "build/"
     ]

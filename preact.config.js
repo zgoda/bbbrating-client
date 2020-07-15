@@ -1,4 +1,4 @@
-export default (config, env, helpers) => {
+export default (config, _env, _helpers) => {
 
   if (config.devServer) {
     config.devServer.proxy = [
@@ -7,7 +7,7 @@ export default (config, env, helpers) => {
         target: "http://127.0.0.1:5000",
         changeOrigin: true,
         changeHost: true,
-        pathRewrite: function(path, request) {
+        pathRewrite: function(path, _request) {
           return '/' + path.replace(/^\/[^\/]+\//, '');
         }
       }
