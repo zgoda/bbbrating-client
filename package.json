@@ -12,17 +12,35 @@
   "eslintConfig": {
     "extends": "airbnb",
     "rules": {
-      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-      "space-before-function-paren": ["error", "never"],
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "react/react-in-jsx-scope": [0]
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "space-before-function-paren": [
+        "error",
+        "never"
+      ],
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
+      "react/react-in-jsx-scope": [
+        0
+      ]
     },
     "ignorePatterns": [
       "build/"
     ]
   },
   "devDependencies": {
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
