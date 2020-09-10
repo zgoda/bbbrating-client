@@ -1,57 +1,45 @@
 {
   "private": true,
-  "name": "client",
-  "version": "0.0.0",
-  "license": "BSD",
+  "name": "bbbrating-client",
+  "version": "0.1.0",
+  "license": "BSD-3-Clause",
   "scripts": {
     "build": "preact build",
-    "serve": "sirv build --cors --single",
+    "serve": "sirv build --port 8080 --cors --single",
     "dev": "preact watch",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "jest"
   },
   "eslintConfig": {
-    "extends": "airbnb",
-    "rules": {
-      "no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_"
-        }
-      ],
-      "space-before-function-paren": [
-        "error",
-        "never"
-      ],
-      "react/jsx-filename-extension": [
-        1,
-        {
-          "extensions": [
-            ".js",
-            ".jsx"
-          ]
-        }
-      ],
-      "react/react-in-jsx-scope": [
-        0
-      ]
-    },
+    "extends": "preact",
     "ignorePatterns": [
       "build/"
     ]
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.4",
-    "eslint-plugin-react-hooks": "^4.0.8",
-    "identity-obj-proxy": "^3.0.0",
+    "@babel/plugin-transform-react-jsx-source": "^7.10.5",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-preact-pure": "^2.2.3",
+    "eslint": "^6.8.0",
+    "eslint-config-preact": "^1.1.1",
+    "hooked-head": "^0.4.1",
+    "jest": "^26.4.2",
+    "jest-preset-preact": "^4.0.2",
+    "milligram": "^1.4.1",
+    "node-sass": "^4.14.1",
     "preact-cli": "^3.0.1",
-    "sirv-cli": "^1.0.3"
+    "sass-loader": "^10.0.2",
+    "sirv-cli": "1.0.6"
   },
   "dependencies": {
-    "preact": "^10.4.6",
+    "preact": "^10.4.8",
     "preact-render-to-string": "^5.1.10"
+  },
+  "jest": {
+    "preset": "jest-preset-preact",
+    "setupFiles": [
+      "<rootDir>/tests/__mocks__/browserMocks.js",
+      "<rootDir>/tests/__mocks__/setupTests.js"
+    ]
   }
 }

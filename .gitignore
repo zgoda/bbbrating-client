@@ -1,5 +1,5 @@
 node_modules
-package-lock.json
-size-plugin.json
 /build
 /*.log
+package-lock.json
+size-plugin.json

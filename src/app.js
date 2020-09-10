@@ -1,9 +1,15 @@
-import Home from './views/home';
+import { useLang, useMeta, useTitle } from 'hooked-head/preact';
 
-export default function App() {
+const App = (() => {
+  const appTitle = 'Piwny ranking Browar.biz';
+  useLang('pl');
+  useTitle(appTitle);
+  useMeta({ name: 'author', content: 'Jarek Zgoda' });
   return (
     <div id="app">
-      <Home />
+      <h1>{appTitle}</h1>
     </div>
-  );
-}
+  )
+});
+
+export default App;
