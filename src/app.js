@@ -7,10 +7,13 @@ const App = (() => {
   useLang('pl');
   useTitle(appTitle);
   useMeta({ name: 'author', content: 'Jarek Zgoda' });
+
   const [token, setToken] = useState('');
+
   return (
     <div id="app" class="container">
       <Login token={token} setToken={setToken} />
+      <hr />
       <h1>{appTitle}</h1>
       <div class="row">
         <div class="column">
