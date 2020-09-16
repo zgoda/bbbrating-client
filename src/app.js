@@ -1,6 +1,6 @@
 import { useLang, useMeta, useTitle } from 'hooked-head/preact';
 import { useState } from 'preact/hooks';
-import { Login } from './components/login';
+import { AuthBox } from './components/auth';
 
 const App = (() => {
   const appTitle = 'Piwny ranking Browar.biz';
@@ -9,10 +9,11 @@ const App = (() => {
   useMeta({ name: 'author', content: 'Jarek Zgoda' });
 
   const [token, setToken] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <div id="app" class="container">
-      <Login token={token} setToken={setToken} />
+      <AuthBox token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <hr />
       <h1>{appTitle}</h1>
       <div class="row">
