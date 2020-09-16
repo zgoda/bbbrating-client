@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
 import { UserPlus, LogIn, LogOut } from 'preact-feather';
-import { tokenRefresh, login } from '../utils/auth';
-import Cookies from 'universal-cookie';
+import { tokenRefresh, login, register, logout } from '../utils/auth';
 
 const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
   const [email, setEmail] = useState('');
@@ -61,19 +60,8 @@ const Register = (({ setToken, setLoggedIn }) => {
   const [password, setPassword] = useState('');
 
   const doRegister = (async () => {
-    const url = '/api/users';
-    const resp = await fetch(url, {
-      method: 'POST',
-      credentials: 'same-origin',
-      body: JSON.stringify({ email, name, password }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    if (resp.ok) {
-      const data = await resp.json();
-      return data.accessToken;
-    }
+    const token = await register(email, password, name);
+    return token;
   });
 
   const handleSubmit = ((e) => {
@@ -112,22 +100,8 @@ const Register = (({ setToken, setLoggedIn }) => {
 
 const SignOut = (({ setToken, setLoggedIn }) => {
   const doLogout = (async () => {
-    const cookies = new Cookies();
-    const csrfCookie = cookies.get('csrf_refresh_token');
-    if (csrfCookie) {
-      const url = '/api/logout';
-      const resp = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'X-CSRF-Token': csrfCookie
-        }
-      });
-      if (resp.ok) {
-        return true;
-      }
-    }
-    return false;
+    const rv = await logout();
+    return rv;
   });
 
   const handleClick = ((e) => {
