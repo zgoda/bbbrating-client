@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'preact/hooks';
+import { UserPlus, LogIn, LogOut } from 'preact-feather';
 import { tokenRefresh, login } from '../utils/auth';
 import Cookies from 'universal-cookie';
 
-const Login = (({ token, setToken, loggedIn, setLoggedIn }) => {
+const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const refresh = (async () => {
-    if (token) {
-      const newToken = await tokenRefresh();
-      setToken(newToken);
-      setLoggedIn(true);
-    }
-  });
-
   useEffect(() => {
+    const refresh = (async () => {
+      if (token) {
+        const newToken = await tokenRefresh();
+        setToken(newToken);
+        setLoggedIn(true);
+      }
+    });
     refresh();
-  }, []);
+  }, [setLoggedIn, setToken, token, loggedIn]);
 
   const doLogin = (async () => {
     const newToken = await login(email, password);
@@ -48,7 +48,7 @@ const Login = (({ token, setToken, loggedIn, setLoggedIn }) => {
               <input type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" />
             </div>
           </div>
-          <button class="button-primary" type="submit">zaloguj</button>
+          <button class="button-primary" type="submit"><LogIn size={16} /> zaloguj</button>
         </fieldset>
       </form>
     </div>
@@ -89,20 +89,28 @@ const Register = (({ setToken, setLoggedIn }) => {
     <div class="container">
       <form onSubmit={handleSubmit}>
         <fieldset>
-          <label for="email">email</label>
-          <input type="text" name="email" value={email} onInput={(e) => setEmail(e.target.value)} />
-          <label for="name">nazwa użytkownika</label>
-          <input type="text" name="name" value={name} onInput={(e) => setName(e.target.value)} />
-          <label for="password">hasło</label>
-          <input type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} />
-          <button class="button-primary">zarejestruj</button>
+          <div class="row">
+            <div class="column">
+              <label for="email">email</label>
+              <input type="text" name="email" value={email} onInput={(e) => setEmail(e.target.value)} />
+            </div>
+            <div class="column">
+              <label for="name">nazwa użytkownika</label>
+              <input type="text" name="name" value={name} onInput={(e) => setName(e.target.value)} />
+            </div>
+            <div class="column">
+              <label for="password">hasło</label>
+              <input type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} />
+            </div>
+          </div>
+          <button class="button-primary"><UserPlus size={16} /> zarejestruj</button>
         </fieldset>
       </form>
     </div>
   )
 });
 
-const LogOut = (({ setToken, setLoggedIn }) => {
+const SignOut = (({ setToken, setLoggedIn }) => {
   const doLogout = (async () => {
     const cookies = new Cookies();
     const csrfCookie = cookies.get('csrf_refresh_token');
@@ -132,18 +140,18 @@ const LogOut = (({ setToken, setLoggedIn }) => {
 
   return (
     <div>
-      <button class="button-primary" onClick={handleClick}>wyloguj</button>
+      <button class="button-primary" onClick={handleClick}><LogOut size={16} /> wyloguj</button>
     </div>
   )
 });
 
 const AuthBox = (({ token, setToken, loggedIn, setLoggedIn }) => {
   if (loggedIn) {
-    return <LogOut setToken={setToken} setLoggedIn={setLoggedIn} />
+    return <SignOut setToken={setToken} setLoggedIn={setLoggedIn} />
   }
   return (
     <>
-      <Login token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <SignIn token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Register setToken={setToken} setLoggedIn={setLoggedIn} />
     </>
   )
