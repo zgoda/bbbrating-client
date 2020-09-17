@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'preact/hooks';
-import { UserPlus, LogIn, LogOut } from 'preact-feather';
+import { UserPlus, LogIn } from 'preact-feather';
 import { tokenRefresh, login, register, logout } from '../utils/auth';
 
 const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [formVisible, setFormVisible] = useState(false);
 
   useEffect(() => {
     const refresh = (async () => {
@@ -35,7 +36,8 @@ const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
   }
   return (
     <div class="container">
-      <form onSubmit={handleSubmit}>
+      <button class="button button-outline" onClick={() => setFormVisible(!formVisible)}>logowanie</button>
+      {formVisible && <form onSubmit={handleSubmit}>
         <fieldset>
           <div class="row">
             <div class="column">
@@ -47,9 +49,9 @@ const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
               <input type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" required={true} autocomplete="current-password" />
             </div>
           </div>
-          <button class="button-primary" type="submit"><LogIn size={16} /> zaloguj</button>
+          <button class="button" type="submit"><LogIn size={16} /> zaloguj</button>
         </fieldset>
-      </form>
+      </form>}
     </div>
   );
 });
@@ -59,6 +61,7 @@ const Register = (({ setToken, setLoggedIn }) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [formVisible, setFormVisible] = useState(false);
 
   const doRegister = (async () => {
     const token = await register(email, password, name);
@@ -76,7 +79,8 @@ const Register = (({ setToken, setLoggedIn }) => {
 
   return (
     <div class="container">
-      <form onSubmit={handleSubmit}>
+      <button class="button button-outline" onClick={() => setFormVisible(!formVisible)}>rejestracja</button>
+      {formVisible && <form onSubmit={handleSubmit}>
         <fieldset>
           <div class="row">
             <div class="column">
@@ -96,9 +100,9 @@ const Register = (({ setToken, setLoggedIn }) => {
               <input type="password" name="password2" value={password2} onInput={(e) => setPassword2(e.target.value)} required={true} />
             </div>
           </div>
-          <button class="button-primary"><UserPlus size={16} /> zarejestruj</button>
+          <button class="button"><UserPlus size={16} /> zarejestruj</button>
         </fieldset>
-      </form>
+      </form>}
     </div>
   )
 });
@@ -109,8 +113,7 @@ const SignOut = (({ setToken, setLoggedIn }) => {
     return rv;
   });
 
-  const handleClick = ((e) => {
-    e.preventDefault();
+  const handleClick = (() => {
     if (doLogout()) {
       setToken('');
       setLoggedIn(false)
@@ -119,7 +122,7 @@ const SignOut = (({ setToken, setLoggedIn }) => {
 
   return (
     <div>
-      <button class="button-primary" onClick={handleClick}><LogOut size={16} /> wyloguj</button>
+      <button class="button button-outline" onClick={handleClick}>wylogowanie</button>
     </div>
   )
 });
