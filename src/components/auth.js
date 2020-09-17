@@ -40,11 +40,11 @@ const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
           <div class="row">
             <div class="column">
               <label for="email">email</label>
-              <input type="text" value={email} onInput={(e) => setEmail(e.target.value)} name="email" />
+              <input type="email" value={email} onInput={(e) => setEmail(e.target.value)} name="email" required={true} />
             </div>
             <div class="column">
               <label for="password">hasło</label>
-              <input type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" />
+              <input type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" required={true} autocomplete="current-password" />
             </div>
           </div>
           <button class="button-primary" type="submit"><LogIn size={16} /> zaloguj</button>
@@ -58,6 +58,7 @@ const Register = (({ setToken, setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
 
   const doRegister = (async () => {
     const token = await register(email, password, name);
@@ -80,7 +81,7 @@ const Register = (({ setToken, setLoggedIn }) => {
           <div class="row">
             <div class="column">
               <label for="email">email</label>
-              <input type="text" name="email" value={email} onInput={(e) => setEmail(e.target.value)} />
+              <input type="email" name="email" value={email} onInput={(e) => setEmail(e.target.value)} required={true} />
             </div>
             <div class="column">
               <label for="name">nazwa użytkownika</label>
@@ -88,7 +89,11 @@ const Register = (({ setToken, setLoggedIn }) => {
             </div>
             <div class="column">
               <label for="password">hasło</label>
-              <input type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} />
+              <input type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} required={true} autocomplete="new-password" />
+            </div>
+            <div class="column">
+              <label for="password2">hasło (powtórz)</label>
+              <input type="password" name="password2" value={password2} onInput={(e) => setPassword2(e.target.value)} required={true} />
             </div>
           </div>
           <button class="button-primary"><UserPlus size={16} /> zarejestruj</button>

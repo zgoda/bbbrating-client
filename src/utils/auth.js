@@ -26,7 +26,6 @@ async function login(email, password) {
   if (resp.ok) {
     return data.accessToken;
   }
-  console.log(resp.status, data.error);
 }
 
 async function register(email, password, name) {
@@ -57,11 +56,11 @@ async function logout() {
         'X-CSRF-Token': csrfCookie
       }
     });
-    if (resp.ok) {
-      return true;
+    if (!resp.ok) {
+      return false;
     }
   }
-  return false;
+  return true;
 }
 
 export { tokenRefresh, login, register, logout };
