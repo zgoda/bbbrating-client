@@ -62,10 +62,23 @@ const Register = (({ setToken, setLoggedIn }) => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [formVisible, setFormVisible] = useState(false);
+  const [errors, setErrors] = useState({email: '', password: '', form: ''});
 
-  const doRegister = (async () => {
-    const token = await register(email, password, name);
-    return token;
+  useEffect(() => {
+    let validationErrors = {email: '', password: ''};
+    if (!email) {
+      validationErrors.email = 'To pole jest wymagane';
+    }
+    if (password2 !== password) {
+      validationErrors.password = 'Wpisane hasła nie są identyczne';
+    }
+    setErrors(validationErrors);
+  }, [email, password, password2]);
+
+  const doRegister = (() => {
+    register(email, password, name).then((token) => {
+      return token;
+    })
   });
 
   const handleSubmit = ((e) => {
@@ -86,6 +99,7 @@ const Register = (({ setToken, setLoggedIn }) => {
             <div class="column">
               <label for="email">email</label>
               <input type="email" name="email" value={email} onInput={(e) => setEmail(e.target.value)} required={true} />
+              {errors.email && <p class="field-error-label">{errors.email}</p>}
             </div>
             <div class="column">
               <label for="name">nazwa użytkownika</label>
@@ -94,6 +108,7 @@ const Register = (({ setToken, setLoggedIn }) => {
             <div class="column">
               <label for="password">hasło</label>
               <input type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} required={true} autocomplete="new-password" />
+              {errors.password && <p class="field-error-label">{errors.password}</p>}
             </div>
             <div class="column">
               <label for="password2">hasło (powtórz)</label>

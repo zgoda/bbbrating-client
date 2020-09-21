@@ -55,6 +55,12 @@ body {
   font-weight: bold;
 }
 
+.field-error-label {
+  color: red;
+  font-size: smaller;
+  font-style: italic;
+}
+
 button svg {
   vertical-align: middle;
   margin-right: 0.5rem;
