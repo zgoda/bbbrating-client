@@ -2,7 +2,13 @@
   "env": {
     "test": {
       "presets": [
-        ["preact-cli/babel", { "modules": "commonjs" }]
+        ["preact-cli/babel", {
+          "modules": "commonjs"
+        }],
+        ["@babel/preset-react", {
+          "runtime": "automatic",
+          "importSource": "preact"
+        }]
       ]
     }
   }
