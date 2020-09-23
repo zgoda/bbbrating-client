@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState, useRef } from 'preact/hooks';
 import { UserPlus, LogIn } from 'preact-feather';
 import { tokenRefresh, login, register, logout } from '../utils/auth';
 
@@ -6,6 +6,25 @@ const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formVisible, setFormVisible] = useState(false);
+  const [errors, setErrors] = useState({ email: '', password: '' });
+
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    const msg = 'To pole jest wymagane';
+    let validationErrors = { email: '', password: '' };
+    if (!email) {
+      validationErrors.email = msg;
+    }
+    if (!password) {
+      validationErrors.password = msg;
+    }
+    setErrors(validationErrors);
+  }, [email, password]);
 
   useEffect(() => {
     const refresh = (async () => {
@@ -43,10 +62,12 @@ const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
             <div class="column">
               <label for="email">email</label>
               <input type="email" value={email} onInput={(e) => setEmail(e.target.value)} name="email" required={true} />
+              {errors.email && <p class="field-error-label">{errors.email}</p>}
             </div>
             <div class="column">
               <label for="password">hasło</label>
               <input type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" required={true} autocomplete="current-password" />
+              {errors.password && <p class="field-error-label">{errors.password}</p>}
             </div>
           </div>
           <button class="button" type="submit"><LogIn size={16} /> zaloguj</button>
@@ -64,7 +85,13 @@ const Register = (({ setToken, setLoggedIn }) => {
   const [formVisible, setFormVisible] = useState(false);
   const [errors, setErrors] = useState({email: '', password: '', form: ''});
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     let validationErrors = {email: '', password: ''};
     if (!email) {
       validationErrors.email = 'To pole jest wymagane';
@@ -129,10 +156,12 @@ const SignOut = (({ setToken, setLoggedIn }) => {
   });
 
   const handleClick = (() => {
-    if (doLogout()) {
-      setToken('');
-      setLoggedIn(false)
-    }
+    doLogout().then((val) => {
+      if (val) {
+        setToken('');
+        setLoggedIn(false);
+      }
+    })
   });
 
   return (
