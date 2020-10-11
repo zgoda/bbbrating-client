@@ -11,7 +11,7 @@ export default (config, env, helpers) => {
         target: 'http://127.0.0.1:5000',
         changeOrigin: true,
         changeHost: true,
-        pathRewrite: function pathRewrite(path, request) {
+        pathRewrite: function pathRewrite(path, _request) {
           const newPath = path.replace(/^\/[^/]+\//, '');
           return `/${newPath}`;
         },
