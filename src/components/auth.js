@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'preact/hooks';
 import { UserPlus, LogIn } from 'preact-feather';
 import { tokenRefresh, login, register, logout } from '../utils/auth';
 
-const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
+const SignInForm = (({ token, setToken, loggedIn, setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formVisible, setFormVisible] = useState(false);
@@ -37,47 +37,67 @@ const SignIn = (({ token, setToken, loggedIn, setLoggedIn }) => {
     refresh();
   }, [setLoggedIn, setToken, token, loggedIn]);
 
-  const doLogin = (async () => {
-    const newToken = await login(email, password);
-    if (newToken) {
-      setToken(newToken);
-      setLoggedIn(true);
-    }
-  });
-
   const handleSubmit = ((e) => {
     e.preventDefault();
+
+    const doLogin = (async () => {
+      const newToken = await login(email, password);
+      if (newToken) {
+        setToken(newToken);
+        setLoggedIn(true);
+      }
+    });
+  
     doLogin();
+    setFormVisible(false);
   });
 
   if (loggedIn) {
     return <p>Zalogowany</p>
   }
   return (
-    <div class="container">
-      <button class="button button-outline" onClick={() => setFormVisible(!formVisible)}>logowanie</button>
-      {formVisible && <form onSubmit={handleSubmit}>
-        <fieldset>
-          <div class="row">
-            <div class="column">
-              <label for="email">email</label>
-              <input type="email" value={email} onInput={(e) => setEmail(e.target.value)} name="email" required={true} />
-              {errors.email && <p class="field-error-label">{errors.email}</p>}
-            </div>
-            <div class="column">
-              <label for="password">hasło</label>
-              <input type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" required={true} autocomplete="current-password" />
-              {errors.password && <p class="field-error-label">{errors.password}</p>}
-            </div>
+    <>
+      <a class="btn btn-link" onClick={() => setFormVisible(!formVisible)}>logowanie</a>
+      {formVisible && <div class="modal active">
+        <a class="modal-overlay" aria-label="Zamknij" onClick={() => setFormVisible(false)} />
+        <div class="modal-container">
+          <div class="modal-header">
+            <a class="btn btn-clear float-right" aria-label="Zamknij" onClick={() => setFormVisible(false)} />
           </div>
-          <button class="button" type="submit"><LogIn size={16} /> zaloguj</button>
-        </fieldset>
-      </form>}
-    </div>
+          <div class="modal-body">
+            <form class="form-horizontal" onSubmit={handleSubmit}>
+              <div class="form-group">
+                <div class="col-3 col-sm-12">
+                  <label for="email" class="form-label">email</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                  <input class="form-input" type="email" value={email} onInput={(e) => setEmail(e.target.value)} name="email" required={true} />
+                  {errors.email && <p class="field-error-label">{errors.email}</p>}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-3 col-sm-12">
+                  <label for="password" class="form-label">hasło</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                  <input class="form-input" type="password" value={password} onInput={(e) => setPassword(e.target.value)} name="password" required={true} autocomplete="current-password" />
+                  {errors.password && <p class="field-error-label">{errors.password}</p>}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-mx-auto">
+                  <button class="btn btn-primary" type="submit"><LogIn size={16} /> zaloguj</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>}
+    </>
   );
 });
 
-const Register = (({ setToken, setLoggedIn }) => {
+const RegisterForm = (({ setToken, setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -165,9 +185,7 @@ const SignOut = (({ setToken, setLoggedIn }) => {
   });
 
   return (
-    <div>
-      <button class="button button-outline" onClick={handleClick}>wylogowanie</button>
-    </div>
+    <a class="btn btn-link" onClick={handleClick}>wylogowanie</a>
   )
 });
 
@@ -177,8 +195,8 @@ const AuthBox = (({ token, setToken, loggedIn, setLoggedIn }) => {
   }
   return (
     <>
-      <SignIn token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-      <Register setToken={setToken} setLoggedIn={setLoggedIn} />
+      <SignInForm token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <RegisterForm setToken={setToken} setLoggedIn={setLoggedIn} />
     </>
   )
 });

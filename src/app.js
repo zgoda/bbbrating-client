@@ -13,8 +13,14 @@ const App = (() => {
 
   return (
     <div id="app" class="container">
-      <AuthBox token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-      <hr />
+      <header class="navbar">
+        <section class="navbar-section">
+          <a href="/" class="btn btn-link">Browar.biz</a>
+        </section>
+        <section class="navbar-section">
+          <AuthBox token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+        </section>
+      </header>
       <h1>{appTitle}</h1>
       <div class="row">
         <div class="column">
