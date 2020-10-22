@@ -138,34 +138,60 @@ const RegisterForm = (({ setToken, setLoggedIn }) => {
   })
 
   return (
-    <div class="container">
-      <button class="button button-outline" onClick={() => setFormVisible(!formVisible)}>rejestracja</button>
-      {formVisible && <form onSubmit={handleSubmit}>
-        <fieldset>
-          <div class="row">
-            <div class="column">
-              <label for="email">email</label>
-              <input type="email" name="email" value={email} onInput={(e) => setEmail(e.target.value)} required={true} />
-              {errors.email && <p class="field-error-label">{errors.email}</p>}
-            </div>
-            <div class="column">
-              <label for="name">nazwa użytkownika</label>
-              <input type="text" name="name" value={name} onInput={(e) => setName(e.target.value)} />
-            </div>
-            <div class="column">
-              <label for="password">hasło</label>
-              <input type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} required={true} autocomplete="new-password" />
-              {errors.password && <p class="field-error-label">{errors.password}</p>}
-            </div>
-            <div class="column">
-              <label for="password2">hasło (powtórz)</label>
-              <input type="password" name="password2" value={password2} onInput={(e) => setPassword2(e.target.value)} required={true} />
-            </div>
+    <>
+      <a class="btn btn-link" onClick={() => setFormVisible(!formVisible)}>rejestracja</a>
+      {formVisible && <div class="modal active">
+        <a class="modal-overlay" aria-label="Zamknij" onClick={() => setFormVisible(false)} />
+        <div class="modal-container">
+          <div class="modal-header">
+            <a class="btn btn-clear float-right" aria-label="Zamknij" onClick={() => setFormVisible(false)} />
           </div>
-          <button class="button"><UserPlus size={16} /> zarejestruj</button>
-        </fieldset>
-      </form>}
-    </div>
+          <div class="modal-body">
+            <form class="form-horizontal" onSubmit={handleSubmit}>
+              <div class="form-group">
+                <div class="col-3 col-sm-12">
+                  <label class="form-label" for="email">email</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                  <input class="form-input" type="email" name="email" value={email} onInput={(e) => setEmail(e.target.value)} required={true} />
+                  {errors.email && <p class="field-error-label">{errors.email}</p>}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-3 col-sm-12">
+                  <label class="form-label" for="name">nazwa użytkownika</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                  <input class="form-input" type="text" name="name" value={name} onInput={(e) => setName(e.target.value)} />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-3 col-sm-12">
+                  <label class="form-label" for="password">hasło</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                  <input class="form-input" type="password" name="password" value={password} onInput={(e) => setPassword(e.target.value)} required={true} autocomplete="new-password" />
+                  {errors.password && <p class="field-error-label">{errors.password}</p>}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-3 col-sm-12">
+                  <label class="form-label" for="password2">hasło (powtórz)</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                  <input class="form-input" type="password" name="password2" value={password2} onInput={(e) => setPassword2(e.target.value)} required={true} />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-mx-auto">
+                  <button class="btn btn-primary" type="submit"><UserPlus size={16} /> zarejestruj</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>}
+    </>
   )
 });
 
