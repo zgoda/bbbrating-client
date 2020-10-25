@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'preact/hooks';
+import { useEffect, useState, useRef, useContext } from 'preact/hooks';
 import { UserPlus, LogIn } from 'preact-feather';
 import { tokenRefresh, login, register, logout } from '../utils/auth';
 
-const SignInForm = (({ token, setToken, loggedIn, setLoggedIn }) => {
+const SignInForm = (({ token, setToken, loggedIn, setLoggedIn, emit }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formVisible, setFormVisible] = useState(false);
@@ -29,22 +29,30 @@ const SignInForm = (({ token, setToken, loggedIn, setLoggedIn }) => {
   useEffect(() => {
     const refresh = (async () => {
       if (token) {
-        const newToken = await tokenRefresh();
-        setToken(newToken);
-        setLoggedIn(true);
+        const { accessToken, error } = await tokenRefresh();
+        if (accessToken) {
+          setToken(accessToken);
+          setLoggedIn(true);
+          emit('signin', { category: 'success', message: 'Zostałeś pomyślnie zalogowany' });
+        } else {
+          emit('signin', { category: 'error', message: error });
+        }
       }
     });
     refresh();
-  }, [setLoggedIn, setToken, token, loggedIn]);
+  }, [setLoggedIn, setToken, token, loggedIn, emit]);
 
   const handleSubmit = ((e) => {
     e.preventDefault();
 
     const doLogin = (async () => {
-      const newToken = await login(email, password);
-      if (newToken) {
-        setToken(newToken);
+      const { accessToken, error } = await login(email, password);
+      if (accessToken) {
+        setToken(accessToken);
         setLoggedIn(true);
+        emit('signin', { category: 'success', message: 'Zostałeś pomyślnie zalogowany' });
+      } else {
+        emit('signin', { category: 'error', message: error });
       }
     });
   
@@ -97,7 +105,7 @@ const SignInForm = (({ token, setToken, loggedIn, setLoggedIn }) => {
   );
 });
 
-const RegisterForm = (({ setToken, setLoggedIn }) => {
+const RegisterForm = (({ setToken, setLoggedIn, emit }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -123,17 +131,20 @@ const RegisterForm = (({ setToken, setLoggedIn }) => {
   }, [email, password, password2]);
 
   const doRegister = (() => {
-    register(email, password, name).then((token) => {
-      return token;
+    register(email, password, name).then((resp) => {
+      return resp;
     })
   });
 
   const handleSubmit = ((e) => {
     e.preventDefault();
-    const newToken = doRegister();
-    if (newToken) {
-      setToken(newToken);
+    const { accessToken, error } = doRegister();
+    if (accessToken) {
+      setToken(accessToken);
       setLoggedIn(true);
+      emit('register', { category: 'success', message: 'Konto zostało zarejestrowane' });
+    } else {
+      emit('register', { category: 'error', message: error });
     }
   })
 
@@ -195,7 +206,7 @@ const RegisterForm = (({ setToken, setLoggedIn }) => {
   )
 });
 
-const SignOut = (({ setToken, setLoggedIn }) => {
+const SignOut = (({ setToken, setLoggedIn, emit }) => {
   const doLogout = (async () => {
     const rv = await logout();
     return rv;
@@ -206,6 +217,7 @@ const SignOut = (({ setToken, setLoggedIn }) => {
       if (val) {
         setToken('');
         setLoggedIn(false);
+        emit('signout', { category: 'success', message: 'Zostałeś wylogowany' })
       }
     })
   });
@@ -215,14 +227,15 @@ const SignOut = (({ setToken, setLoggedIn }) => {
   )
 });
 
-const AuthBox = (({ token, setToken, loggedIn, setLoggedIn }) => {
+const AuthBox = (({ token, setToken, loggedIn, setLoggedIn, pubsub }) => {
+  const events = useContext(pubsub);
   if (loggedIn) {
-    return <SignOut setToken={setToken} setLoggedIn={setLoggedIn} />
+    return <SignOut setToken={setToken} setLoggedIn={setLoggedIn} emit={events.emit} />
   }
   return (
     <>
-      <SignInForm token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-      <RegisterForm setToken={setToken} setLoggedIn={setLoggedIn} />
+      <SignInForm token={token} setToken={setToken} loggedIn={loggedIn} setLoggedIn={setLoggedIn} emit={events.emit} />
+      <RegisterForm setToken={setToken} setLoggedIn={setLoggedIn} emit={events.emit} />
     </>
   )
 });

@@ -6,10 +6,14 @@ async function tokenRefresh() {
     method: 'POST',
     credentials: 'same-origin',
   });
+  const ret = { accessToken: '', error: '' };
+  const data = await resp.json();
   if (resp.ok) {
-    const data = await resp.json();
-    return data.accessToken;
+    ret.accessToken = data.accessToken;
+  } else {
+    ret.error = data.error;
   }
+  return ret;
 }
 
 async function login(email, password) {
@@ -22,10 +26,14 @@ async function login(email, password) {
     },
     body: JSON.stringify({ email, password })
   });
+  const ret = { accessToken: '', error: '' };
   const data = await resp.json();
   if (resp.ok) {
-    return data.accessToken;
+    ret.accessToken = data.accessToken;
+  } else {
+    ret.error = data.error;
   }
+  return ret
 }
 
 async function register(email, password, name) {
@@ -38,10 +46,14 @@ async function register(email, password, name) {
       'Content-Type': 'application/json'
     }
   });
+  const ret = { accessToken: '', error: '' };
+  const data = await resp.json();
   if (resp.ok) {
-    const data = await resp.json();
-    return data.accessToken;
+    ret.accessToken = data.accessToken;
+  } else {
+    ret.error = data.error;
   }
+  return ret
 }
 
 async function logout() {
