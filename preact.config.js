@@ -5,16 +5,22 @@ export default (config, env, helpers) => {
   babelConfig.plugins.push(require.resolve('@babel/plugin-transform-react-jsx-source'));
 
   if (config.devServer) {
+    const target = 'http://127.0.0.1:5000';
     config.devServer.proxy = [
       {
         path: '/api/**',
-        target: 'http://127.0.0.1:5000',
+        target,
         changeOrigin: true,
         changeHost: true,
         pathRewrite: function pathRewrite(path, _request) {
           const newPath = path.replace(/^\/[^/]+\//, '');
           return `/${newPath}`;
         },
+        onProxyReq: (proxyReq) => {
+          if (proxyReq.getHeader('origin')) {
+            proxyReq.setHeader('origin', target);
+          }
+        }
       },
     ];
   }

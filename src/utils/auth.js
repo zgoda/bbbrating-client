@@ -1,10 +1,15 @@
 import Cookies from 'universal-cookie';
 
 async function tokenRefresh() {
+  const cookies = new Cookies();
+  const csrfCookie = cookies.get('csrf_refresh_token');
   const url = '/api/token/refresh';
   const resp = await fetch(url, {
     method: 'POST',
     credentials: 'same-origin',
+    headers: {
+      'X-CSRF-Token': csrfCookie
+    }
   });
   const ret = { accessToken: '', error: '' };
   const data = await resp.json();
