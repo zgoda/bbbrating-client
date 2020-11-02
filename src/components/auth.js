@@ -10,6 +10,8 @@ const SignInForm = (({ token, setToken, loggedIn, setLoggedIn, emit }) => {
 
   const firstRender = useRef(true);
 
+  const emitSource = 'signin';
+
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -33,9 +35,9 @@ const SignInForm = (({ token, setToken, loggedIn, setLoggedIn, emit }) => {
         if (accessToken) {
           setToken(accessToken);
           setLoggedIn(true);
-          emit('signin', { category: 'success', message: 'Zostałeś pomyślnie zalogowany' });
+          emit(emitSource, { category: 'success', message: 'Zostałeś pomyślnie zalogowany' });
         } else {
-          emit('signin', { category: 'error', message: error });
+          emit(emitSource, { category: 'error', message: error });
         }
       }
     });
@@ -50,9 +52,9 @@ const SignInForm = (({ token, setToken, loggedIn, setLoggedIn, emit }) => {
       if (accessToken) {
         setToken(accessToken);
         setLoggedIn(true);
-        emit('signin', { category: 'success', message: 'Zostałeś pomyślnie zalogowany' });
+        emit(emitSource, { category: 'success', message: 'Zostałeś pomyślnie zalogowany' });
       } else {
-        emit('signin', { category: 'error', message: error });
+        emit(emitSource, { category: 'error', message: error });
       }
     });
   
@@ -113,6 +115,8 @@ const RegisterForm = (({ setToken, setLoggedIn, emit }) => {
   const [formVisible, setFormVisible] = useState(false);
   const [errors, setErrors] = useState({email: '', password: '', form: ''});
 
+  const emitSource = 'register';
+
   const firstRender = useRef(true);
 
   useEffect(() => {
@@ -142,9 +146,9 @@ const RegisterForm = (({ setToken, setLoggedIn, emit }) => {
     if (accessToken) {
       setToken(accessToken);
       setLoggedIn(true);
-      emit('register', { category: 'success', message: 'Konto zostało zarejestrowane' });
+      emit(emitSource, { category: 'success', message: 'Konto zostało zarejestrowane' });
     } else {
-      emit('register', { category: 'error', message: error });
+      emit(emitSource, { category: 'error', message: error });
     }
   })
 
