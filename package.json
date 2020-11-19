@@ -35,9 +35,9 @@
   },
   "dependencies": {
     "mitt": "^2.1.0",
-    "preact": "^10.5.6",
+    "preact": "^10.5.7",
     "preact-feather": "^4.1.0",
-    "preact-render-to-string": "^5.1.11",
+    "preact-render-to-string": "^5.1.12",
     "spectre.css": "^0.5.9",
     "universal-cookie": "^4.0.4"
   },
